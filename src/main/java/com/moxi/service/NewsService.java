@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.moxi.model.News;
+import com.moxi.model.content.News;
 import com.moxi.util.Constant;
 	
 @Mapper

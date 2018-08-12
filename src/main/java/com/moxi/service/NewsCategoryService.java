@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import com.moxi.model.NewsCategory;
+import com.moxi.model.content.NewsCategory;
 
 @Mapper
 public interface NewsCategoryService {
