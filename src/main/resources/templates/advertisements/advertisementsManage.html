@@ -55,7 +55,7 @@
 		                        </div>
 		                    </div>
 		                    <div class="ibox-content" style="display: block;">
-		                    	<form action="newsManage_0_0_0">
+		                    	<form action="advertisementsManage_0_0_0">
 		                        <div class="row">
 	                            	<div class="col-sm-3 m-b-xs">
 	                            		<input id="title" name="title" placeholder="文章标题" class="form-control" type="text" th:value="${advertisements.title}"/>
@@ -90,7 +90,7 @@
 	                             </form>
 	                            <div class="row">
 		                            <div class="col-sm-6 m-b-xs">
-					                    <a th:href="@{newsEdit}" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="" data-original-title="Refresh inbox"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;新增文章&nbsp;&nbsp;&nbsp;&nbsp;</a>
+					                    <a th:href="@{advertisementsEdit}" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="" data-original-title="Refresh inbox"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;新增文章&nbsp;&nbsp;&nbsp;&nbsp;</a>
 					                </div>
 					                <div class="col-sm-6 m-b-xs">
 	                             	</div>
@@ -123,18 +123,18 @@
 		                                    </tr>
 	                                    </thead>
 	                                    <tbody>
-	                                    	<tr th:each="news : ${advertisementsList}">
+	                                    	<tr th:each="advertisements : ${advertisementsList}">
 										   		<td th:text="${advertisements.id}">Onions</td>
 										      	<td th:text="${advertisements.title}">Onions</td>
 										      	<td th:text="${advertisements.categoryName}">Onions</td>
 										      	<td th:text="${advertisements.addDate}">Onions</td>
 										      	<td>
-										      		<a href="#" th:onclick="'javascript:updateState('+${news.id}+',0,2);'" title="状态"><i class="" th:class="${news.commendState} == 2? 'fa fa-arrow-up text-danger' : 'fa fa-arrow-down text-navy'"></i></a>
+										      		<a href="#" th:onclick="'javascript:updateState('+${advertisements.id}+',0,2);'" title="状态"><i class="" th:class="${advertisements.commendState} == 2? 'fa fa-arrow-up text-danger' : 'fa fa-arrow-down text-navy'"></i></a>
 										      	</td>
 										      	<td>
-										      		<a th:href="@{'newsEdit?id='+${news.id}}" title="修改"><i class="fa fa-edit text-navy"></i></a>
+										      		<a th:href="@{'advertisementsEdit?id='+${advertisements.id}}" title="修改"><i class="fa fa-edit text-navy"></i></a>
 										      		&nbsp;&nbsp;&nbsp;&nbsp;
-										      		<a href="#" th:onclick="'javascript:updateState('+${news.id}+',2,0);'" title="删除"><i class="fa fa-trash-o text-navy"></i></a>
+										      		<a href="#" th:onclick="'javascript:updateState('+${advertisements.id}+',2,0);'" title="删除"><i class="fa fa-trash-o text-navy"></i></a>
 										      	</td>
 											</tr>
 	                                    </tbody>

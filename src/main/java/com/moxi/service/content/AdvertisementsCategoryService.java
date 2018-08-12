@@ -1,4 +1,4 @@
-package com.moxi.service;
+package com.moxi.service.content;
 
 import com.moxi.model.content.AdvertisementsCategory;
 import org.apache.ibatis.annotations.Insert;
@@ -16,7 +16,7 @@ import java.util.List;
  * Time: 19:44
  */
 @Mapper
-public interface AdvertisementsCategroyService {
+public interface AdvertisementsCategoryService {
 
     @Select("select * from `moxi`.`advertisements_category` where id = #{id};")
     AdvertisementsCategory findById(AdvertisementsCategory advertisementsCategory);

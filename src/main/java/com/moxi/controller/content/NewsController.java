@@ -24,8 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.moxi.model.content.News;
 import com.moxi.model.content.NewsCategory;
 import com.moxi.model.ResObject;
-import com.moxi.service.NewsCategoryService;
-import com.moxi.service.NewsService;
+import com.moxi.service.content.NewsCategoryService;
+import com.moxi.service.content.NewsService;
 import com.moxi.util.Constant;
 import com.moxi.util.PageUtil;
 

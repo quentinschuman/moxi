@@ -1,18 +1,26 @@
 package com.moxi.controller.content;
 
+import com.moxi.model.ResObject;
 import com.moxi.model.content.Advertisements;
 import com.moxi.model.content.AdvertisementsCategory;
-import com.moxi.service.AdvertisementsCategroyService;
-import com.moxi.service.AdvertisementsService;
+import com.moxi.service.content.AdvertisementsCategoryService;
+import com.moxi.service.content.AdvertisementsService;
 import com.moxi.util.Constant;
 import com.moxi.util.PageUtil;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,7 +36,7 @@ public class AdvertisementController {
     private AdvertisementsService advertisementsService;
 
     @Autowired
-    private AdvertisementsCategroyService advertisementsCategroyService;
+    private AdvertisementsCategoryService advertisementsCategoryService;
 
     @RequestMapping("/admin/advertisementsManage_{pageCurrent}_{pageSize}_{pageCount}")
     public String advertisementsManager(Advertisements advertisements, @PathVariable Integer pageCurrent, @PathVariable Integer pageSize, @PathVariable Integer pageCount, Model model){
@@ -53,7 +61,7 @@ public class AdvertisementController {
         AdvertisementsCategory advertisementsCategory = new AdvertisementsCategory();
         advertisementsCategory.setStart(0);
         advertisementsCategory.setEnd(Integer.MAX_VALUE);
-        List<AdvertisementsCategory> advertisementsCategoryList = advertisementsCategroyService.list(advertisementsCategory);
+        List<AdvertisementsCategory> advertisementsCategoryList = advertisementsCategoryService.list(advertisementsCategory);
 
         //输出
         model.addAttribute("advertisementsCategoryList",advertisementsCategoryList);
@@ -63,5 +71,75 @@ public class AdvertisementController {
         model.addAttribute("advertisements",advertisements);
 
         return "advertisements/advertisementsManage";
+    }
+
+    @GetMapping("/admin/advertisementsEdit")
+    public String advertisementsEditGet(Model model,Advertisements advertisements){
+        AdvertisementsCategory advertisementsCategory = new AdvertisementsCategory();
+        advertisementsCategory.setStart(0);
+        advertisementsCategory.setEnd(Integer.MAX_VALUE);
+        List<AdvertisementsCategory> advertisementsCategoryList = advertisementsCategoryService.list(advertisementsCategory);
+        model.addAttribute("advertisementsCategoryList",advertisementsCategoryList);
+        if (advertisements.getId() != 0){
+            Advertisements advertisementsT = advertisementsService.findById(advertisements);
+            model.addAttribute("advertisements",advertisementsT);
+        }
+        return "advertisements/advertisementsEdit";
+    }
+
+    @PostMapping("/admin/advertisementsEdit")
+    public String advertisementsEditPost(Model model, Advertisements advertisements, @RequestParam MultipartFile[] imageFile, HttpSession httpSession){
+        for (MultipartFile file : imageFile){
+            if (file.isEmpty()){
+                System.out.println("文件未上传");
+            }else {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+                Random random = new Random();
+                Date date = new Date();
+                String strDate = sdf.format(date);
+                String fileName = strDate + "_" + random.nextInt(1000) + file.getOriginalFilename().substring(file.getOriginalFilename().indexOf("."),file.getOriginalFilename().length());
+                String realPath = httpSession.getServletContext().getRealPath("/userfiles");
+                System.out.println("realPath : " + realPath);
+                try {
+                    FileUtils.copyInputStreamToFile(file.getInputStream(),new File(realPath,fileName));
+                    advertisements.setImage("/userfiles/" + fileName);
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (advertisements.getId() != 0){
+            advertisementsService.update(advertisements);
+        }else {
+            advertisementsService.insert(advertisements);
+        }
+        return "redirect:advertisementsManage_0_0_0";
+    }
+
+    @ResponseBody
+    @PostMapping("/admin/advertisementsEditState")
+    public ResObject<Object> advertisementsEditState(Advertisements advertisements){
+        Advertisements advertisements3 = advertisementsService.findById(advertisements);
+        if (advertisements.getState() == 0){
+            advertisements.setState(advertisements3.getState());
+        }
+        if (advertisements.getCommendState() == 0){
+            advertisements.setCommendState(advertisements3.getCommendState());
+        }
+        if (advertisements.getBrowses() == 0){
+            advertisements.setBrowses(advertisements3.getBrowses());
+        }
+        if (advertisements.getLikes() == 0){
+            advertisements.setLikes(advertisements3.getLikes());
+        }
+        if (advertisements.getComments() == 0){
+            advertisements.setComments(advertisements3.getComments());
+        }
+        if (advertisements.getScore() == 0){
+            advertisements.setScore(advertisements3.getScore());
+        }
+        advertisementsService.updateState(advertisements);
+        ResObject<Object> object = new ResObject<Object>(Constant.Code01,Constant.Msg01,null,null);
+        return object;
     }
 }

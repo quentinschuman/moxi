@@ -1,4 +1,4 @@
-package com.moxi.service;
+package com.moxi.service.content;
 
 import com.moxi.model.content.Advertisements;
 import com.moxi.util.Constant;
