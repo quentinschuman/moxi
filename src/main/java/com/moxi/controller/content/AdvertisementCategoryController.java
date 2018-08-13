@@ -54,7 +54,7 @@ public class AdvertisementCategoryController {
         String pageHTML = PageUtil.getPageContent("advertisementsCategoryManage_{pageCurrent}_{pageSize}_{pageCount}?name=" + advertisementsCategory.getName(),pageCurrent,pageSize,pageCount);
         model.addAttribute("pageHTML",pageHTML);
         model.addAttribute("advertisementsCategory",advertisementsCategory);
-        return "advertisements/advertisementsManage";
+        return "advertisements/advertisementsCategoryManage";
     }
 
     @GetMapping("/admin/advertisementsCategoryEdit")
