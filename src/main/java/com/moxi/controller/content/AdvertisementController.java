@@ -87,34 +87,34 @@ public class AdvertisementController {
         return "advertisements/advertisementsEdit";
     }
 
-    @PostMapping("/admin/advertisementsEdit")
-    public String advertisementsEditPost(Model model, Advertisements advertisements, @RequestParam MultipartFile[] imageFile, HttpSession httpSession){
-        for (MultipartFile file : imageFile){
-            if (file.isEmpty()){
-                System.out.println("文件未上传");
-            }else {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-                Random random = new Random();
-                Date date = new Date();
-                String strDate = sdf.format(date);
-                String fileName = strDate + "_" + random.nextInt(1000) + file.getOriginalFilename().substring(file.getOriginalFilename().indexOf("."),file.getOriginalFilename().length());
-                String realPath = httpSession.getServletContext().getRealPath("/userfiles");
-                System.out.println("realPath : " + realPath);
-                try {
-                    FileUtils.copyInputStreamToFile(file.getInputStream(),new File(realPath,fileName));
-                    advertisements.setImage("/userfiles/" + fileName);
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-            }
-        }
-        if (advertisements.getId() != 0){
-            advertisementsService.update(advertisements);
-        }else {
-            advertisementsService.insert(advertisements);
-        }
-        return "redirect:advertisementsManage_0_0_0";
-    }
+//    @PostMapping("/admin/advertisementsEdit")
+//    public String advertisementsEditPost(Model model, Advertisements advertisements, @RequestParam MultipartFile[] imageFile, HttpSession httpSession){
+//        for (MultipartFile file : imageFile){
+//            if (file.isEmpty()){
+//                System.out.println("文件未上传");
+//            }else {
+//                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+//                Random random = new Random();
+//                Date date = new java.util.Date();
+//                String strDate = sdf.format(date);
+//                String fileName = strDate + "_" + random.nextInt(1000) + file.getOriginalFilename().substring(file.getOriginalFilename().indexOf("."),file.getOriginalFilename().length());
+//                String realPath = httpSession.getServletContext().getRealPath("/userfiles");
+//                System.out.println("realPath : " + realPath);
+//                try {
+//                    FileUtils.copyInputStreamToFile(file.getInputStream(),new File(realPath,fileName));
+//                    advertisements.setImage("/userfiles/" + fileName);
+//                }catch (IOException e){
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        if (advertisements.getId() != 0){
+//            advertisementsService.update(advertisements);
+//        }else {
+//            advertisementsService.insert(advertisements);
+//        }
+//        return "redirect:advertisementsManage_0_0_0";
+//    }
 
     @ResponseBody
     @PostMapping("/admin/advertisementsEditState")
